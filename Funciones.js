@@ -1,4 +1,3 @@
-"use strict";
 function MetodoBasico(X0, Y0, X1, Y1) {
     var m = Pendiente(X0, Y0, X1, Y1);
     //console.log(`${Y0} - (${m} * ${X0})`)
@@ -37,5 +36,18 @@ function Pendiente(X0, Y0, X1, Y1) {
     var m = (Y1 - Y0) / (X1 - X0);
     return m;
 }
-var Prueba = MetodoBasico(1, 2, 3, 6);
-console.log(Prueba);
+function DibujarLinea(X0, Y0, X1, Y1) {
+    console.log("hola");
+    var TablaCoordenadas = new Array();
+    TablaCoordenadas = MetodoBasico(X0, Y0, X1, Y1);
+    console.log(TablaCoordenadas);
+}
+
+function DibujarPixel(X, Y) {
+
+	var linea= document.getElementById("canvas").getContext("2d");
+    linea.fillStyle = "#000000";
+		linea.fillRect((x0) + 100, 100 - (y0), 3, 3);
+		linea.stroke();
+}
+

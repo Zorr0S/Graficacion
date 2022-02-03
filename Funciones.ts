@@ -1,3 +1,5 @@
+
+//TODO:Validar cuando solo se dibuja un punto
 function MetodoBasico(
   X0: number,
   Y0: number,
@@ -49,5 +51,22 @@ function Pendiente(X0: number, Y0: number, X1: number, Y1: number) {
   return m;
 }
 
-var Prueba = MetodoBasico(1, 2, 3, 6);
-console.log(Prueba);
+function DibujarLinea( X0: number,Y0: number,X1: number,Y1: number){
+  console.log("hola");
+  let TablaCoordenadas: number[][] = new Array();
+  TablaCoordenadas=MetodoBasico(X0,Y0,X1,Y1);
+  console.log(TablaCoordenadas);
+
+}
+function DibujarPixel(X:number, Y:number) {
+
+	const linea= <HTMLCanvasElement> document.getElementById("canvas");
+  linea.getContext("2d");
+ 
+
+    linea.fill = "#000000";
+		linea.fillRect((X) + 100, 100 - (Y), 3, 3);
+		linea.stroke();
+}
+
+
