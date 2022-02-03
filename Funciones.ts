@@ -14,7 +14,9 @@ function MetodoBasico(
   let Dy = Math.abs(Y0 - Y1);
 
   let TablaCoordenadas: number[][] = new Array();
-  TablaCoordenadas.push([X0, Y0]);
+  TablaCoordenadas.push([0,0]);
+  TablaCoordenadas[0][0]= X0;
+  TablaCoordenadas[0][1]= Y1;
   function Normal(Valor: number) {
 
     //console.log(`(${m}(${Valor}) )+ ${B} = ${((m*(Valor))+B)}`);
@@ -26,8 +28,9 @@ function MetodoBasico(
   }
 
   if (Dy > Dx) {
+    
     //Funcion Despejada
-    for (let index = 1; index < Dy; index++) {
+    for (let index:number = 1; index < Dy; index++) {
         let Aux = TablaCoordenadas[0][1] + index;
         let ValorX = Math.round(ANormal(Aux));
         TablaCoordenadas.push([ValorX, Aux]);
@@ -35,9 +38,12 @@ function MetodoBasico(
     }
   } else {
     //Se inicializa el array
-    for (let index = 1; index <Dx; index++) {
-        let Aux = TablaCoordenadas[0][0] + index;
-        let ValorY = Math.round(Normal(Aux));
+    console.log(Dx);
+    for (let index:number = 1; index <Dx; index++) {
+        let Aux:number = (TablaCoordenadas[0][0]) + (index);
+        console.log(`${TablaCoordenadas[0][0]} + ${index} = ${Aux}`);
+        console.log(index);
+        let ValorY:number = Math.round(Normal(Aux));
       TablaCoordenadas.push([Aux, ValorY]);
     }
     
@@ -56,17 +62,22 @@ function DibujarLinea( X0: number,Y0: number,X1: number,Y1: number){
   let TablaCoordenadas: number[][] = new Array();
   TablaCoordenadas=MetodoBasico(X0,Y0,X1,Y1);
   console.log(TablaCoordenadas);
+  DibujarPixel(X0,Y0);
+  DibujarPixel(X1,Y1);
+  
+  for (let i = 0; i < TablaCoordenadas.length; i++) {
+    let X:number = TablaCoordenadas[i][0];
+    let Y:number = TablaCoordenadas[i][1];
+    DibujarPixel(X,Y);
+    
+  }
 
 }
+//Funcion para dibujar un solo pixel
 function DibujarPixel(X:number, Y:number) {
-
-	const linea= <HTMLCanvasElement> document.getElementById("canvas");
-  linea.getContext("2d");
- 
-
-    linea.fill = "#000000";
-		linea.fillRect((X) + 100, 100 - (Y), 3, 3);
-		linea.stroke();
+  let canvas = document.getElementById("canvas") as  HTMLCanvasElement;
+  let context:CanvasRenderingContext2D  =canvas.getContext("2d") as CanvasRenderingContext2D;
+   context.fillStyle = "#197BBD";
+   context.fillRect((X) + 100, 100 - (Y), 3, 3);
+  context.stroke();
 }
-
-

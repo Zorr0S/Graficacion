@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <script src="Funciones.js"></script>
+ 
 </head>
 
 <body>
@@ -16,12 +16,11 @@
         <br>
         <label>X1</label><input type="number" value="0" id="x1">
         <label>Y1</label><input type="number" value="0" id="y1">
-        <button onclick="DibujarLinea(x0.value,y0.value,x1.value,y1.value)">DibujarLinea</button>
+        <button onclick="DibujarLinea(parseFloat(x0.value),parseFloat(y0.value),parseFloat(x1.value),parseFloat(y1.value))">DibujarLinea</button>
         <br>
         <br>
-        <canvas id="canvas" width="400" height="400" style="border: 1px solid;">
-            << /canvas>
+        <canvas id="canvas" width="500" height="500" style="border: 1px solid black;"></canvas>
     </div>
 </body>
-
+<script src="Funciones.js"></script>
 </html>
