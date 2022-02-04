@@ -40,21 +40,11 @@ function Selector(
     Xf: number = X1;
   let Yi: number = Y0,
     Yf: number = Y1;
-  
 
   switch (Metodo) {
     case "DDA":
       console.log("Entro DDA");
-      if (!(Y0 <= Y1)) {
-          let AuxiliarX: number = X0;
-          let AuxiliarY: number = Y0;
-          // En caso de que pase sus valores se intercambian
-          Y0 = Y1;
-          Y1 = AuxiliarY;
-    
-          X0 = X1;
-          X1 = AuxiliarX;
-        }
+      //Las validaciones sobre las coordenas ocurren dentro la funcion
       DibujarLineaDDA(
         Math.round(X0),
         Math.round(Y0),
@@ -62,14 +52,22 @@ function Selector(
         Math.round(Y1)
       );
       break;
-
+    case "Bresenhan":
+      console.log("Entro Bresenhan");
+      DibujarLineaBresenhan(
+        Math.round(X0),
+        Math.round(Y0),
+        Math.round(X1),
+        Math.round(Y1)
+      );
+      break;
     default:
       console.log("Entro Directo");
       if (X0 > X1) {
         console.log("Se invertierosn las cords");
         Xi = X1;
         Xf = X0;
-    
+
         Yi = Y1;
         Yf = Y0;
       }
@@ -82,7 +80,7 @@ function Selector(
       break;
   }
 }
-//----------------------------Metodos
+//----------------------------Metodos-----------------------------
 function MetodoDirecto(X0: number, Y0: number, X1: number, Y1: number) {
   let Pendiente, B, DeltaX, DeltaY;
   DeltaX = X1 - X0;
@@ -119,30 +117,29 @@ function MetodoDirecto(X0: number, Y0: number, X1: number, Y1: number) {
   }
 }
 function MetodoDDA(X0: number, Y0: number, X1: number, Y1: number) {
+  //Se calculan las deltas
   let DeltaX = Math.abs(X1 - X0);
   let DeltaY = Math.abs(Y1 - Y0);
 
   var Pendiente;
 
-  // Cambiar puntos aqui, no antes
+  // Se determina si se aplica la formula normal o su forma derivada
 
   if (DeltaY > DeltaX) {
+    //Se calcula la pendioente Inversa
     Pendiente = (X1 - X0) / (Y1 - Y0);
+    //se invierte las  cordenadas decuerdo a la condicion
+    if (!(Y0 <= Y1)) {
+      let AuxiliarX: number = X0;
+      let AuxiliarY: number = Y0;
+      // En caso de que pase sus valores se intercambian
+      Y0 = Y1;
+      Y1 = AuxiliarY;
 
-    // Se calculan las X
-    // Se debe saber si y0 es mayor a y1, porque si esto pasa nunca entrara al ciclo for
-    // if (!(Y0 <= Y1)) {
-    //   let AuxiliarX: number = X0;
-    //   let AuxiliarY: number = Y0;
-    //   // En caso de que pase sus valores se intercambian
-    //   Y0 = Y1;
-    //   Y1 = AuxiliarY;
-
-    //   X0 = X1;
-    //   X1 = AuxiliarX;
-    // }
-
-    var ValorX = X0;
+      X0 = X1;
+      X1 = AuxiliarX;
+    }
+    var ValorX: number = X0;
 
     for (ValorY = Y0; ValorY <= Y1; ValorY++) {
       DibujarPixel(Math.round(ValorX), ValorY);
@@ -150,14 +147,15 @@ function MetodoDDA(X0: number, Y0: number, X1: number, Y1: number) {
       ValorX += Pendiente;
     }
   } else {
+    //Calcula de la pendiente de manera normal
     Pendiente = (Y1 - Y0) / (X1 - X0);
 
     // Se calculan las Y
-    // Se debe saber si x0 es mayor a x1, porque si esto pasa nunca entrara al ciclo for
+    //se invierte las  cordenadas decuerdo a la condicion
     if (!(X0 <= X1)) {
       var AuxioliarY: number = Y0;
       var AuxiliarX: number = X0;
-      // En caso de que pase sus valores se intercambian
+
       X0 = X1;
       X1 = AuxiliarX;
 
@@ -165,7 +163,7 @@ function MetodoDDA(X0: number, Y0: number, X1: number, Y1: number) {
       Y1 = AuxioliarY;
     }
 
-    var ValorY = Y0;
+    var ValorY: number = Y0;
 
     for (ValorX = X0; ValorX <= X1; ValorX++) {
       DibujarPixel(ValorX, Math.round(ValorY));
@@ -174,37 +172,65 @@ function MetodoDDA(X0: number, Y0: number, X1: number, Y1: number) {
     }
   }
 }
-function MetodoBresenHan(X0: number, Y0: number, x1: number, y1: number) {
-  let DeltaX = Math.abs(x1 - X0);
-  let DeltaY = Math.abs(y1 - Y0);
-  let sx = X0 < x1 ? 1 : -1;
-  let sy = Y0 < y1 ? 1 : -1;
-  let err = DeltaX - DeltaY;
 
-  while (true) {
-    DibujarPixel(X0, Y0);
 
-    if (X0 === x1 && Y0 === y1) break;
-    var e2 = 2 * err;
-    if (e2 > -DeltaY) {
-      err -= DeltaY;
-      X0 += sx;
+//Algoritmo Bresenham
+function MetodoBresenhanA(X0: number, Y0: number, X1: number, Y1: number) {
+  let DeltaX: number = X1 - X0,
+    DeltaY: number = Y1 - Y0;
+  let Pk: number = 0,
+    Pk1: number = 0,
+    Pk2: number = 0;
+  let stepX: number = 0,
+    stepY: number = 0;
+  // Se definen comom se daran los saltos de coordenas
+  if (DeltaY < 0) {
+    DeltaY = -DeltaY;
+    stepY = -1;
+  } else {
+    stepY = 1;
+  }
+
+  if (DeltaX < 0) {
+    DeltaX = -DeltaX;
+    stepX = -1;
+  } else {
+    stepX = 1;
+  }
+
+  let Punto: number = 0;
+
+  if (DeltaX > DeltaY) {
+    Pk = 2 * DeltaY - DeltaX;
+    Pk1 = 2 * DeltaY;
+    Pk2 = 2 * (DeltaY - DeltaX);
+    while (X0 != X1) {
+      Punto++;
+      X0 = X0 + stepX;
+      if (Pk < 0) {
+        Pk = Pk + Pk1;
+      } else {
+        Y0 = Y0 + stepY;
+        Pk = Pk + Pk2;
+      }
+      DibujarPixel(X0, Y0);
     }
-    if (e2 < DeltaX) {
-      err += DeltaX;
-      Y0 += sy;
+  } else {
+    Pk = 2 * DeltaX - DeltaY;
+    Pk1 = 2 * DeltaX;
+    Pk2 = 2 * (DeltaX - DeltaY);
+    while (Y0 != Y1) {
+      Punto++;
+      Y0 = Y0 + stepY;
+      if (Pk < 0) {
+        Pk = Pk + Pk1;
+      } else {
+        X0 = X0 + stepX;
+        Pk = Pk + Pk2;
+      }
+      DibujarPixel(X0, Y0);
     }
   }
-}
-function Pendiente(X0: number, Y0: number, X1: number, Y1: number) {
-  let m: number = (Y1 - Y0) / (X1 - X0);
-  console.log(`Pendiente: (${Y1} - ${Y0}})/(${X1} - ${X0}) =  ${m}`);
-  return m;
-}
-function PendienteInversa(X0: number, Y0: number, X1: number, Y1: number) {
-  let m: number = (X1 - X0) / (Y1 - Y0);
-  console.log(`Pendiente: (${X1} - ${X0}) /(${Y1} - ${Y0}})=  ${m}`);
-  return m;
 }
 
 //Funcion para dibujar un solo pixel
@@ -228,6 +254,14 @@ function DibujarLineaDirecta(X0: number, Y0: number, X1: number, Y1: number) {
   console.log(X1 + " + " + Y1);
   DibujarPixel(X0, Y0);
   MetodoDirecto(X0, Y0, X1, Y1);
+
+  DibujarPixel(X1, Y1);
+}
+function DibujarLineaBresenhan(X0: number, Y0: number, X1: number, Y1: number) {
+  console.log(X0 + " + " + Y0);
+  console.log(X1 + " + " + Y1);
+  DibujarPixel(X0, Y0);
+  MetodoBresenhanA(X0, Y0, X1, Y1);
 
   DibujarPixel(X1, Y1);
 }
