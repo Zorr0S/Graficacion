@@ -36,11 +36,7 @@ function Selector(
   X1: number,
   Y1: number
 ) {
-  let Xi: number = X0,
-    Xf: number = X1;
-  let Yi: number = Y0,
-    Yf: number = Y1;
-
+  
   switch (Metodo) {
     case "DDA":
       console.log("Entro DDA");
@@ -63,25 +59,31 @@ function Selector(
       break;
     default:
       console.log("Entro Directo");
-      if (X0 > X1) {
-        console.log("Se invertierosn las cords");
-        Xi = X1;
-        Xf = X0;
-
-        Yi = Y1;
-        Yf = Y0;
-      }
+     
       DibujarLineaDirecta(
-        Math.round(Xi),
-        Math.round(Yi),
-        Math.round(Xf),
-        Math.round(Yf)
+        Math.round(X0),
+        Math.round(Y0),
+        Math.round(X1),
+        Math.round(Y1)
       );
       break;
   }
 }
 //----------------------------Metodos-----------------------------
 function MetodoDirecto(X0: number, Y0: number, X1: number, Y1: number) {
+  let Xi: number = X0,
+    Xf: number = X1;
+  let Yi: number = Y0,
+    Yf: number = Y1;
+
+  if (X0 > X1) {
+    console.log("Se invertierosn las cords");
+    Xi = X1;
+    Xf = X0;
+
+    Yi = Y1;
+    Yf = Y0;
+  }
   let Pendiente, B, DeltaX, DeltaY;
   DeltaX = X1 - X0;
   DeltaY = Y1 - Y0;
@@ -264,4 +266,8 @@ function DibujarLineaBresenhan(X0: number, Y0: number, X1: number, Y1: number) {
   MetodoBresenhanA(X0, Y0, X1, Y1);
 
   DibujarPixel(X1, Y1);
+}
+
+function Limpiar(){
+  context.clearRect(0, 0, canvas.width, canvas.height);
 }
