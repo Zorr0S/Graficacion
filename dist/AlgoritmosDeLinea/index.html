@@ -1,32 +1,26 @@
 <!DOCTYPE html>
 <html>
 
+    
 <head>
     <meta charset="UTF-8">
  
 </head>
 
-<body align="center<">
-    <h1 align="center">Algoritmo Basico</h1>
+<body align="center" onload="">
+    <h1 align="center">Algoritmos de dibujado de linea</h1>
     <div align="center">
-        <!-- <label>X0</label><input type="number" value="0" id="x0" autofocus="">
-        <label>Y0</label><input type="number" value="0" id="y0">
-
-        <br>
-        <br>
-        <label>X1</label><input type="number" value="0" id="x1">
-        <label>Y1</label><input type="number" value="0" id="y1">
-        <button onclick="DibujarLineaDirecta(parseFloat(x0.value),parseFloat(y0.value),parseFloat(x1.value),parseFloat(y1.value))">DibujarLinea</button>
-        <br> -->
+   
         <div class="tools">
             <input type="radio" id="Directo" name="tool" value="Directo" checked="true" onclick="handleTool(this);"><label for="Directo"><span>Directo</span></label>
             <input type="radio" id="DDA" name="tool" value="DDA" onclick="handleTool(this);"><label for="DDA">DDA</label>
             <input type="radio" id="Bresenhan" name="tool" value="Bresenhan" onclick="handleTool(this);"><label for="Bresenhan">Bresenhan</label>
-            
+            <br>
+            <button onclick="Limpiar()">Limpiar</button>
         </div>      
         <br>
         <canvas id="canvas" width="500" height="500" style="border: 1px solid black;"></canvas>
     </div>
-</body>
-<script src="Funciones.js"></script>
+    
+</body><script src="./Lineas.js"></script>
 </html>

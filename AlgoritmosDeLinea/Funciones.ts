@@ -43,11 +43,26 @@ function handleTool(X: any) {
   Seleccion = X.value;
 }
 //ALgoritmos
+<<<<<<< HEAD:AlgoritmosDeLinea/Funciones.ts
 function Selector(Metodo: string, Coordnada0: Punto, Coordnada1: Punto) {
   let X0: number = Coordnada0.X,
     Y0: number = Coordnada0.Y;
   let X1: number = Coordnada1.X,
     Y1: number = Coordnada1.Y;
+=======
+function Selector(
+  Metodo: string,
+  X0: number,
+  Y0: number,
+  X1: number,
+  Y1: number
+) {
+  let Xi: number = X0,
+    Xf: number = X1;
+  let Yi: number = Y0,
+    Yf: number = Y1;
+
+>>>>>>> parent of e9a546f (Revisado y liberado):Funciones.ts
   switch (Metodo) {
     case "DDA":
       console.log("Entro DDA");
@@ -65,31 +80,29 @@ function Selector(Metodo: string, Coordnada0: Punto, Coordnada1: Punto) {
       break;
     default:
       console.log("Entro Directo");
+<<<<<<< HEAD:AlgoritmosDeLinea/Funciones.ts
 
+=======
+      if (X0 > X1) {
+        console.log("Se invertierosn las cords");
+        Xi = X1;
+        Xf = X0;
+
+        Yi = Y1;
+        Yf = Y0;
+      }
+>>>>>>> parent of e9a546f (Revisado y liberado):Funciones.ts
       DibujarLineaDirecta(
-        Math.round(X0),
-        Math.round(Y0),
-        Math.round(X1),
-        Math.round(Y1)
+        Math.round(Xi),
+        Math.round(Yi),
+        Math.round(Xf),
+        Math.round(Yf)
       );
       break;
   }
 }
 //----------------------------Metodos-----------------------------
 function MetodoDirecto(X0: number, Y0: number, X1: number, Y1: number) {
-  let Xi: number = X0,
-    Xf: number = X1;
-  let Yi: number = Y0,
-    Yf: number = Y1;
-
-  if (X0 > X1) {
-    console.log("Se invertierosn las cords");
-    Xi = X1;
-    Xf = X0;
-
-    Yi = Y1;
-    Yf = Y0;
-  }
   let Pendiente, B, DeltaX, DeltaY;
   DeltaX = X1 - X0;
   DeltaY = Y1 - Y0;
@@ -277,7 +290,10 @@ function DibujarLineaBresenhan(Coordnada0: Punto, Coordnada1: Punto) {
 
   DibujarPixel(Coordnada1.X, Coordnada1.Y);
 }
+<<<<<<< HEAD:AlgoritmosDeLinea/Funciones.ts
 
 function Limpiar() {
   context.clearRect(0, 0, canvas.width, canvas.height);
 }
+=======
+>>>>>>> parent of e9a546f (Revisado y liberado):Funciones.ts
