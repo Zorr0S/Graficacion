@@ -3,27 +3,42 @@
 var canvas = document.getElementById("canvas");
 var context = canvas.getContext("2d");
 var rect = canvas.getBoundingClientRect();
-var inicialX, inicialY;
-var finalX, finalY;
+var Punto = /** @class */ (function () {
+    function Punto(X1, Y1) {
+        this.X = Math.round(X1);
+        this.Y = Math.round(Y1);
+    }
+    return Punto;
+}());
+var CoordInicial = new Punto(0, 0);
+var CoordFinal = new Punto(0, 0);
+// let inicialX: number, inicialY: number;
+// let finalX: number, finalY: number;
 var Seleccion = "Directo";
 //-----------------------Botonoes--------------------------
 canvas.addEventListener("mousedown", function (e) {
-    inicialX = e.clientX - rect.left;
-    inicialY = e.clientY - rect.top;
-    console.log("Coordenada 1: ".concat(inicialX, ", ").concat(inicialY));
+    context = canvas.getContext("2d");
+    rect = canvas.getBoundingClientRect();
+    CoordInicial.X = Math.round(e.clientX - rect.left);
+    CoordInicial.Y = Math.round(e.clientY - rect.top);
+    console.log("Coordenada 1: " + CoordInicial);
 });
 canvas.addEventListener("mouseup", function (e) {
-    finalX = e.clientX - rect.left;
-    finalY = e.clientY - rect.top;
-    console.log("Coordenada 2: ".concat(finalX, ", ").concat(finalY));
-    Selector(Seleccion, inicialX, inicialY, finalX, finalY);
+    context = canvas.getContext("2d");
+    rect = canvas.getBoundingClientRect();
+    CoordFinal.X = Math.round(e.clientX - rect.left);
+    CoordFinal.Y = Math.round(e.clientY - rect.top);
+    console.log("Coordenada 2: " + CoordFinal);
+    Selector(Seleccion, CoordInicial, CoordInicial);
 });
 function handleTool(X) {
     console.log(X.value);
     Seleccion = X.value;
 }
 //ALgoritmos
-function Selector(Metodo, X0, Y0, X1, Y1) {
+function Selector(Metodo, Coordnada0, Coordnada1) {
+    var X0 = Coordnada0.X, Y0 = Coordnada0.Y;
+    var X1 = Coordnada1.X, Y1 = Coordnada1.Y;
     switch (Metodo) {
         case "DDA":
             console.log("Entro DDA");
@@ -32,7 +47,7 @@ function Selector(Metodo, X0, Y0, X1, Y1) {
             break;
         case "Bresenhan":
             console.log("Entro Bresenhan");
-            DibujarLineaBresenhan(Math.round(X0), Math.round(Y0), Math.round(X1), Math.round(Y1));
+            DibujarLineaBresenhan(Coordnada0, Coordnada1);
             break;
         default:
             console.log("Entro Directo");
@@ -133,7 +148,11 @@ function MetodoDDA(X0, Y0, X1, Y1) {
     }
 }
 //Algoritmo Bresenham
-function MetodoBresenhanA(X0, Y0, X1, Y1) {
+function MetodoBresenhan(CoordenadaInicial, CoordenadaFinal) {
+    var X0 = CoordenadaInicial.X;
+    var Y0 = CoordenadaInicial.Y;
+    var X1 = CoordenadaFinal.X;
+    var Y1 = CoordenadaFinal.Y;
     var DeltaX = X1 - X0, DeltaY = Y1 - Y0;
     var Pk = 0, Pk1 = 0, Pk2 = 0;
     var stepX = 0, stepY = 0;
@@ -208,12 +227,12 @@ function DibujarLineaDirecta(X0, Y0, X1, Y1) {
     MetodoDirecto(X0, Y0, X1, Y1);
     DibujarPixel(X1, Y1);
 }
-function DibujarLineaBresenhan(X0, Y0, X1, Y1) {
-    console.log(X0 + " + " + Y0);
-    console.log(X1 + " + " + Y1);
-    DibujarPixel(X0, Y0);
-    MetodoBresenhanA(X0, Y0, X1, Y1);
-    DibujarPixel(X1, Y1);
+function DibujarLineaBresenhan(Coordnada0, Coordnada1) {
+    console.log(Coordnada0.X + " + " + Coordnada0.Y);
+    console.log(Coordnada1.X + " + " + Coordnada1.Y);
+    DibujarPixel(Coordnada0.X, Coordnada0.Y);
+    MetodoBresenhan(CoordInicial, CoordFinal);
+    DibujarPixel(Coordnada1.X, Coordnada1.Y);
 }
 function Limpiar() {
     context.clearRect(0, 0, canvas.width, canvas.height);
