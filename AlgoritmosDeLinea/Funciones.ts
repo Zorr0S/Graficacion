@@ -62,6 +62,9 @@ function Selector(
   let Yi: number = Y0,
     Yf: number = Y1;
 
+<<<<<<< HEAD:AlgoritmosDeLinea/Funciones.ts
+>>>>>>> parent of e9a546f (Revisado y liberado):Funciones.ts
+=======
 >>>>>>> parent of e9a546f (Revisado y liberado):Funciones.ts
   switch (Metodo) {
     case "DDA":
@@ -81,8 +84,11 @@ function Selector(
     default:
       console.log("Entro Directo");
 <<<<<<< HEAD:AlgoritmosDeLinea/Funciones.ts
+<<<<<<< HEAD:AlgoritmosDeLinea/Funciones.ts
 
 =======
+=======
+>>>>>>> parent of e9a546f (Revisado y liberado):Funciones.ts
       if (X0 > X1) {
         console.log("Se invertierosn las cords");
         Xi = X1;
@@ -91,6 +97,9 @@ function Selector(
         Yi = Y1;
         Yf = Y0;
       }
+<<<<<<< HEAD:AlgoritmosDeLinea/Funciones.ts
+>>>>>>> parent of e9a546f (Revisado y liberado):Funciones.ts
+=======
 >>>>>>> parent of e9a546f (Revisado y liberado):Funciones.ts
       DibujarLineaDirecta(
         Math.round(Xi),
@@ -291,9 +300,12 @@ function DibujarLineaBresenhan(Coordnada0: Punto, Coordnada1: Punto) {
   DibujarPixel(Coordnada1.X, Coordnada1.Y);
 }
 <<<<<<< HEAD:AlgoritmosDeLinea/Funciones.ts
+<<<<<<< HEAD:AlgoritmosDeLinea/Funciones.ts
 
 function Limpiar() {
   context.clearRect(0, 0, canvas.width, canvas.height);
 }
+=======
+>>>>>>> parent of e9a546f (Revisado y liberado):Funciones.ts
 =======
 >>>>>>> parent of e9a546f (Revisado y liberado):Funciones.ts

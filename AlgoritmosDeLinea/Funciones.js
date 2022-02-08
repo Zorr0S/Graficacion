@@ -44,6 +44,9 @@ function Selector(Metodo, Coordnada0, Coordnada1) {
 function Selector(Metodo, X0, Y0, X1, Y1) {
     var Xi = X0, Xf = X1;
     var Yi = Y0, Yf = Y1;
+<<<<<<< HEAD:AlgoritmosDeLinea/Funciones.js
+>>>>>>> parent of e9a546f (Revisado y liberado):Funciones.js
+=======
 >>>>>>> parent of e9a546f (Revisado y liberado):Funciones.js
     switch (Metodo) {
         case "DDA":
@@ -174,12 +177,17 @@ function MetodoBresenhan(X0, Y0, x1, y1) {
 }
 //Algoritmo Bresenham
 <<<<<<< HEAD:AlgoritmosDeLinea/Funciones.js
+<<<<<<< HEAD:AlgoritmosDeLinea/Funciones.js
 function MetodoBresenhan(CoordenadaInicial, CoordenadaFinal) {
     var X0 = CoordenadaInicial.X;
     var Y0 = CoordenadaInicial.Y;
     var X1 = CoordenadaFinal.X;
     var Y1 = CoordenadaFinal.Y;
     var DeltaX = X1 - X0, DeltaY = Y1 - Y0;
+=======
+function MetodoBresenhanA(X0, Y0, X1, Y1) {
+    var DeltaX = (X1 - X0), DeltaY = (Y1 - Y0);
+>>>>>>> parent of e9a546f (Revisado y liberado):Funciones.js
 =======
 function MetodoBresenhanA(X0, Y0, X1, Y1) {
     var DeltaX = (X1 - X0), DeltaY = (Y1 - Y0);
@@ -257,10 +265,19 @@ function DibujarLineaDirecta(X0, Y0, X1, Y1) {
     MetodoDirecto(X0, Y0, X1, Y1);
     DibujarPixel(X1, Y1);
 }
+<<<<<<< HEAD:AlgoritmosDeLinea/Funciones.js
 function DibujarLineaBresenhan(Coordnada0, Coordnada1) {
     console.log(Coordnada0.X + " + " + Coordnada0.Y);
     console.log(Coordnada1.X + " + " + Coordnada1.Y);
     DibujarPixel(Coordnada0.X, Coordnada0.Y);
     MetodoBresenhan(CoordInicial, CoordFinal);
     DibujarPixel(Coordnada1.X, Coordnada1.Y);
+=======
+function DibujarLineaBresenhan(X0, Y0, X1, Y1) {
+    console.log(X0 + " + " + Y0);
+    console.log(X1 + " + " + Y1);
+    DibujarPixel(X0, Y0);
+    MetodoBresenhanA(X0, Y0, X1, Y1);
+    DibujarPixel(X1, Y1);
+>>>>>>> parent of e9a546f (Revisado y liberado):Funciones.js
 }
