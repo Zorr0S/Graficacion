@@ -45,21 +45,19 @@ function Selector(Metodo, Coordnada0, Coordnada1) {
             break;
         default:
             console.log("Entro Directo");
-            DibujarLineaDirecta(Math.round(X0), Math.round(Y0), Math.round(X1), Math.round(Y1));
+            if (X0 > X1) {
+                console.log("Se invertierosn las cords");
+                Xi = X1;
+                Xf = X0;
+                Yi = Y1;
+                Yf = Y0;
+            }
+            DibujarLineaDirecta(Math.round(Xi), Math.round(Yi), Math.round(Xf), Math.round(Yf));
             break;
     }
 }
 //----------------------------Metodos-----------------------------
 function MetodoDirecto(X0, Y0, X1, Y1) {
-    var Xi = X0, Xf = X1;
-    var Yi = Y0, Yf = Y1;
-    if (X0 > X1) {
-        console.log("Se invertierosn las cords");
-        Xi = X1;
-        Xf = X0;
-        Yi = Y1;
-        Yf = Y0;
-    }
     var Pendiente, B, DeltaX, DeltaY;
     DeltaX = X1 - X0;
     DeltaY = Y1 - Y0;
@@ -138,6 +136,27 @@ function MetodoDDA(X0, Y0, X1, Y1) {
         for (ValorX = X0; ValorX <= X1; ValorX++) {
             (0, Metodos_1.DibujarPixel)(context, ValorX, Math.round(ValorY));
             ValorY += Pendiente;
+        }
+    }
+}
+function MetodoBresenhan(X0, Y0, x1, y1) {
+    var DeltaX = Math.abs(x1 - X0);
+    var DeltaY = Math.abs(y1 - Y0);
+    var sx = X0 < x1 ? 1 : -1;
+    var sy = Y0 < y1 ? 1 : -1;
+    var err = DeltaX - DeltaY;
+    while (true) {
+        DibujarPixel(X0, Y0);
+        if (X0 === x1 && Y0 === y1)
+            break;
+        var e2 = 2 * err;
+        if (e2 > -DeltaY) {
+            err -= DeltaY;
+            X0 += sx;
+        }
+        if (e2 < DeltaX) {
+            err += DeltaX;
+            Y0 += sy;
         }
     }
 }
