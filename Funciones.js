@@ -57,8 +57,8 @@ function Prueba() {
         HorizontalesB.push([1000, i]);
     }
     for (var i = 0; i <= VerticalesA.length; i++) {
-        EsquinaDerechaA.push(HorizontalesA[i]);
-        EsquinaDerechaB.push(VerticalesB[i]);
+        EsquinaDerechaA.push(HorizontalesA);
+        EsquinaDerechaB.push([1000, VerticalesB[i][1]]);
     }
     // //Dibujar verticales
     // for (let index = 0; index < VerticalesA.length; index++) {

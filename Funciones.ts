@@ -89,8 +89,8 @@ function Prueba() {
   
   for (let i: number = 0; i <= VerticalesA.length; i++) {
     
-    EsquinaDerechaA.push(HorizontalesA[i]);
-    EsquinaDerechaB.push(VerticalesB[i]);
+    EsquinaDerechaA.push(VerticalesA);
+    EsquinaDerechaB.push([1000,VerticalesB[i][1]]);
   }
   // //Dibujar verticales
   // for (let index = 0; index < VerticalesA.length; index++) {
@@ -118,10 +118,9 @@ function Prueba() {
       HorizontalesB[index][0], //X1
       HorizontalesB[index][1]  //Y1
       
-    );
+     );
   }
-
-  
+ 
   //Dibujar Esquina Derecha
 }
 
