@@ -40,6 +40,30 @@ function Selector(Metodo, X0, Y0, X1, Y1) {
             break;
     }
 }
+//----------------------------Pruebas-----------------------
+function Prueba() {
+    var VerticalesA = new Array();
+    var VerticalesB = new Array();
+    var HorizontalesA = new Array();
+    var HorizontalesB = new Array();
+    for (var i = 0; i <= 1000; i += 2) {
+        VerticalesA.push([i, 0]);
+        VerticalesB.push([i, 1000]);
+    }
+    for (var i = 0; i <= 1000; i += 2) {
+        HorizontalesA.push([0, i]);
+        HorizontalesB.push([1000, i]);
+    }
+    //Dibujar verticales
+    for (var index = 0; index < VerticalesA.length; index++) {
+        DibujarLineaBresenhan(VerticalesA[index][0], VerticalesA[index][1], VerticalesB[index][0], VerticalesB[index][1]);
+    }
+    //Dibujar Horizaontales
+    for (var index = 0; index < HorizontalesA.length; index++) {
+        DibujarLineaBresenhan(HorizontalesA[index][0], HorizontalesA[index][1], HorizontalesB[index][0], HorizontalesB[index][1]);
+    }
+    console.log(VerticalesA);
+}
 //----------------------------Metodos-----------------------------
 function MetodoDirecto(X0, Y0, X1, Y1) {
     var Xi = X0, Xf = X1;
@@ -191,7 +215,7 @@ function MetodoBresenhanA(X0, Y0, X1, Y1) {
 //Funcion para dibujar un solo pixel
 function DibujarPixel(X, Y) {
     context.fillStyle = "#197BBD";
-    context.fillRect(X, Y, 3, 3);
+    context.fillRect(X, Y, 1, 1);
     context.stroke();
 }
 function DibujarLineaDDA(X0, Y0, X1, Y1) {
@@ -209,8 +233,8 @@ function DibujarLineaDirecta(X0, Y0, X1, Y1) {
     DibujarPixel(X1, Y1);
 }
 function DibujarLineaBresenhan(X0, Y0, X1, Y1) {
-    console.log(X0 + " + " + Y0);
-    console.log(X1 + " + " + Y1);
+    // console.log(X0 + " + " + Y0);
+    // console.log(X1 + " + " + Y1);
     DibujarPixel(X0, Y0);
     MetodoBresenhanA(X0, Y0, X1, Y1);
     DibujarPixel(X1, Y1);

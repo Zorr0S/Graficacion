@@ -36,7 +36,6 @@ function Selector(
   X1: number,
   Y1: number
 ) {
-  
   switch (Metodo) {
     case "DDA":
       console.log("Entro DDA");
@@ -59,7 +58,7 @@ function Selector(
       break;
     default:
       console.log("Entro Directo");
-     
+
       DibujarLineaDirecta(
         Math.round(X0),
         Math.round(Y0),
@@ -69,6 +68,55 @@ function Selector(
       break;
   }
 }
+//----------------------------Pruebas-----------------------
+function Prueba() {
+  var VerticalesA = new Array();
+  var VerticalesB = new Array();
+  var HorizontalesA = new Array();
+  var HorizontalesB = new Array();
+
+  var EsquinaDerechaA = new Array();
+  var EsquinaDerechaB = new Array();
+  for (let i: number = 0; i <= 1000; i += 2) {
+    VerticalesA.push([i, 0]);
+    VerticalesB.push([i, 1000]);
+  }
+  for (let i: number = 0; i <= 1000; i += 2) {
+    HorizontalesA.push([0, i]);
+    HorizontalesB.push([1000, i]);
+  }
+  
+  let AuxA:number=998;
+  let AuxB:number=2;
+  for (let i: number = 0; i <= 1000; i += 2) {
+    
+    
+    EsquinaDerechaA.push([0, i]);
+    EsquinaDerechaB.push([1000, i]);
+  }
+  //Dibujar verticales
+  for (let index = 0; index < VerticalesA.length; index++) {
+    DibujarLineaBresenhan(
+      VerticalesA[index][0],
+      VerticalesA[index][1],
+      VerticalesB[index][0],
+      VerticalesB[index][1]
+    );
+  }
+  //Dibujar Horizaontales
+  for (let index = 0; index < HorizontalesA.length; index++) {
+    DibujarLineaBresenhan(
+      HorizontalesA[index][0],
+      HorizontalesA[index][1],
+      HorizontalesB[index][0],
+      HorizontalesB[index][1]
+    );
+  }
+
+  
+  //Dibujar Esquina Derecha
+}
+
 //----------------------------Metodos-----------------------------
 function MetodoDirecto(X0: number, Y0: number, X1: number, Y1: number) {
   let Xi: number = X0,
@@ -175,7 +223,6 @@ function MetodoDDA(X0: number, Y0: number, X1: number, Y1: number) {
   }
 }
 
-
 //Algoritmo Bresenham
 function MetodoBresenhanA(X0: number, Y0: number, X1: number, Y1: number) {
   let DeltaX: number = X1 - X0,
@@ -238,7 +285,7 @@ function MetodoBresenhanA(X0: number, Y0: number, X1: number, Y1: number) {
 //Funcion para dibujar un solo pixel
 function DibujarPixel(X: number, Y: number) {
   context.fillStyle = "#197BBD";
-  context.fillRect(X, Y, 3, 3);
+  context.fillRect(X, Y, 1, 1);
   context.stroke();
 }
 
@@ -260,14 +307,14 @@ function DibujarLineaDirecta(X0: number, Y0: number, X1: number, Y1: number) {
   DibujarPixel(X1, Y1);
 }
 function DibujarLineaBresenhan(X0: number, Y0: number, X1: number, Y1: number) {
-  console.log(X0 + " + " + Y0);
-  console.log(X1 + " + " + Y1);
+  // console.log(X0 + " + " + Y0);
+  // console.log(X1 + " + " + Y1);
   DibujarPixel(X0, Y0);
   MetodoBresenhanA(X0, Y0, X1, Y1);
 
   DibujarPixel(X1, Y1);
 }
 
-function Limpiar(){
+function Limpiar() {
   context.clearRect(0, 0, canvas.width, canvas.height);
 }
