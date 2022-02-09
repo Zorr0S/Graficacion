@@ -86,30 +86,38 @@ function Prueba() {
     HorizontalesB.push([1000, i]);
   }
   
-  let AuxA:number=998;
-  let AuxB:number=2;
-  for (let i: number = 0; i <= 1000; i += 2) {
+  
+  for (let i: number = 0; i <= VerticalesA.length; i++) {
     
-    
-    EsquinaDerechaA.push([0, i]);
-    EsquinaDerechaB.push([1000, i]);
+    EsquinaDerechaA.push(HorizontalesA[i]);
+    EsquinaDerechaB.push(VerticalesB[i]);
   }
-  //Dibujar verticales
+  // //Dibujar verticales
+  // for (let index = 0; index < VerticalesA.length; index++) {
+  //   DibujarLineaBresenhan(
+  //     VerticalesA[index][0],
+  //     VerticalesA[index][1],
+  //     VerticalesB[index][0],
+  //     VerticalesB[index][1]
+  //   );
+  // }
+  // //Dibujar Horizaontales
+  // for (let index = 0; index < HorizontalesA.length; index++) {
+  //   DibujarLineaBresenhan(
+  //     HorizontalesA[index][0],
+  //     HorizontalesA[index][1],
+  //     HorizontalesB[index][0],
+  //     HorizontalesB[index][1]
+  //   );
+  // }
+
   for (let index = 0; index < VerticalesA.length; index++) {
     DibujarLineaBresenhan(
-      VerticalesA[index][0],
-      VerticalesA[index][1],
-      VerticalesB[index][0],
-      VerticalesB[index][1]
-    );
-  }
-  //Dibujar Horizaontales
-  for (let index = 0; index < HorizontalesA.length; index++) {
-    DibujarLineaBresenhan(
-      HorizontalesA[index][0],
-      HorizontalesA[index][1],
-      HorizontalesB[index][0],
-      HorizontalesB[index][1]
+      VerticalesA[index][0], //X0
+      VerticalesA[index][1], //Y0
+      HorizontalesB[index][0], //X1
+      HorizontalesB[index][1]  //Y1
+      
     );
   }
 
@@ -307,8 +315,8 @@ function DibujarLineaDirecta(X0: number, Y0: number, X1: number, Y1: number) {
   DibujarPixel(X1, Y1);
 }
 function DibujarLineaBresenhan(X0: number, Y0: number, X1: number, Y1: number) {
-  // console.log(X0 + " + " + Y0);
-  // console.log(X1 + " + " + Y1);
+   console.log(X0 + " + " + Y0);
+   console.log(X1 + " + " + Y1);
   DibujarPixel(X0, Y0);
   MetodoBresenhanA(X0, Y0, X1, Y1);
 
