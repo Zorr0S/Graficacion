@@ -388,8 +388,7 @@ function DibujarLineaDirecta(Punto0, Punto1) {
     DibujarPixel(Punto1.X, Punto1.Y);
 }
 function DibujarLineaBresenhan(Punto0, Punto1) {
-    // console.log(X0 + " + " + Y0);
-    // console.log(X1 + " + " + Y1);
+    console.log(`(${Punto0.X} ${Punto0.Y})---------(${Punto1.X} ${Punto1.Y})`);
     DibujarPixel(Punto0.X, Punto0.Y);
     MetodoBresenhanA(Punto0, Punto1);
     DibujarPixel(Punto1.X, Punto1.Y);
@@ -434,17 +433,17 @@ function drawPoligon(Punto0, Punto1, Radio, lados) {
     PuntoAnterior.Redondear();
     let PrimerPunto = PuntoAnterior;
     PrimerPunto.Redondear();
+    console.log(`(${PuntoAnterior.X} ${PuntoAnterior.Y})`);
     for (let index = 0; index <= 360; index += (360 / lados)) {
         x = Radio * Math.cos((Math.PI / 180) * index) + x0;
         y = DeltaY * Math.sin((Math.PI / 180) * index) + y0;
         PuntoAux = new Punto(x, y);
         PuntoAux.Redondear();
-        console.log(`(${PuntoAnterior.X} ${PuntoAnterior.Y})---------(${PuntoAux.X} ${PuntoAux.Y})`);
-        MetodoBresenhanA(PuntoAnterior, PuntoAux);
+        DibujarLineaBresenhan(PuntoAnterior, PuntoAux);
         PuntoAnterior = PuntoAux;
-        alert(index);
     }
-    MetodoBresenhanA(PuntoAux, PuntoInicial);
+    console.log(`Ultima`);
+    DibujarLineaBresenhan(PuntoAux, PrimerPunto);
 }
 // var PuntoAux=new Punto(0,0);
 // var PuntoAux2=new Punto(500,500);
