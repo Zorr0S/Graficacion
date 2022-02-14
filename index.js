@@ -11,11 +11,16 @@ class Punto {
         this.X = A;
         this.Y = B;
     }
+    Redondear() {
+        this.X = Math.round(this.X);
+        this.Y = Math.round(this.Y);
+    }
 }
 //Variables Gobales
 let Seleccion = "Directo";
 let inicialX, inicialY;
 let finalX, finalY;
+let NLados = 3;
 let PuntoInicial = new Punto(0, 0), PuntoFinal = new Punto(0, 0);
 function RefreshPosition() {
     context = canvas.getContext("2d");
@@ -41,37 +46,53 @@ function handleTool(X) {
     console.log(X.value);
     Seleccion = X.value;
 }
+function handleNumberTool(X) {
+    NLados = parseInt(X.value);
+    console.log(NLados);
+}
 //ALgoritmos
 function Selector(Metodo, Punto0, Punto1) {
-    let FuncionMetodo;
     switch (Metodo) {
         case "DDA":
             console.log("Entro DDA");
-            //Las validaciones sobre las coordenas ocurren dentro la funcion
-            FuncionMetodo = DibujarLineaDDA;
+            DibujarLineaDDA(Punto0, Punto1);
             break;
         case "Bresenhan":
             console.log("Entro Bresenhan");
-            FuncionMetodo = DibujarLineaBresenhan;
-            // DibujarLineaBresenhan(
-            //   Math.round(X0),
-            //   Math.round(Y0),
-            //   Math.round(X1),
-            //   Math.round(Y1)
-            // );
+            DibujarLineaBresenhan(Punto0, Punto1);
+            break;
+        case "Circulo":
+            console.log("Entro Circulo");
+            let AuxCentro = midpoint(Punto0, Punto1);
+            console.log(`Punto Medio: ${AuxCentro.X} , ${AuxCentro.Y} `);
+            let AuxRadio = Distancia(AuxCentro, Punto1);
+            console.log(`Radio: ${AuxRadio}`);
+            DrawCirle(AuxCentro, AuxRadio);
+            break;
+        case "Poligono":
+            console.log("Entro Poligono");
+            drawPoligon(Punto0, Punto1, Distancia(Punto0, Punto1) / 2, NLados);
             break;
         default:
             console.log("Entro Directo");
-            FuncionMetodo = DibujarLineaDirecta;
-            // DibujarLineaDirecta(
-            //   Math.round(X0),
-            //   Math.round(Y0),
-            //   Math.round(X1),
-            //   Math.round(Y1)
-            // );
+            DibujarLineaDirecta(Punto0, Punto1);
             break;
     }
-    FuncionMetodo(Punto0, Punto1);
+}
+//Funcioens Auxiliares
+/*Devuelve la coordenada del punto de enmedio de 2 puntos*/
+function midpoint(Punto0, Punto1) {
+    let X1 = Punto0.X, y1 = Punto0.Y;
+    let X2 = Punto1.X, y2 = Punto1.Y;
+    let Resultado = new Punto((X1 + X2) / 2, (y1 + y2) / 2);
+    //(X1 + X2) / 2 +" , " + (y1 + y2) / 2
+    return Resultado;
+}
+function Distancia(Punto0, Punto1) {
+    let X1 = Punto0.X, Y1 = Punto0.Y;
+    let X2 = Punto1.X, Y2 = Punto1.Y;
+    // Calculating distance
+    return Math.sqrt(Math.pow(X2 - X1, 2) + Math.pow(Y2 - Y1, 2) * 1.0);
 }
 //----------------------------Pruebas-----------------------
 function Prueba() {
@@ -318,59 +339,31 @@ function MetodoDDA(Punto0, Punto1) {
 }
 //Algoritmo Bresenham
 function MetodoBresenhanA(Punto0, Punto1) {
-    let X0 = Punto0.X, Y0 = Punto0.Y;
-    let X1 = Punto1.X, Y1 = Punto1.Y;
-    let DeltaX = X1 - X0, DeltaY = Y1 - Y0;
-    let Pk = 0, Pk1 = 0, Pk2 = 0;
-    let stepX = 0, stepY = 0;
-    // Se definen comom se daran los saltos de coordenas
-    if (DeltaY < 0) {
-        DeltaY = -DeltaY;
-        stepY = -1;
-    }
-    else {
-        stepY = 1;
-    }
-    if (DeltaX < 0) {
-        DeltaX = -DeltaX;
-        stepX = -1;
-    }
-    else {
-        stepX = 1;
-    }
-    let Punto = 0;
-    if (DeltaX > DeltaY) {
-        Pk = 2 * DeltaY - DeltaX;
-        Pk1 = 2 * DeltaY;
-        Pk2 = 2 * (DeltaY - DeltaX);
-        while (X0 != X1) {
-            Punto++;
-            X0 = X0 + stepX;
-            if (Pk < 0) {
-                Pk = Pk + Pk1;
-            }
-            else {
-                Y0 = Y0 + stepY;
-                Pk = Pk + Pk2;
-            }
-            DibujarPixel(X0, Y0);
+    Punto;
+    let x0 = Punto0.X, y0 = Punto0.Y;
+    let x1 = Punto1.X, y1 = Punto1.Y;
+    var dx = Math.abs(x1 - x0);
+    //console.log("dx = " + dx);
+    var dy = Math.abs(y1 - y0);
+    //console.log("dy = " + dy);
+    // Se saca la diferencia de las x y y
+    var sx = (x0 < x1) ? 1 : -1;
+    var sy = (y0 < y1) ? 1 : -1;
+    // dx -dy
+    var err = dx - dy;
+    // Mientras los puntos no sean iguales
+    while (x0 != x1 || y0 != y1) {
+        DibujarPixel(x0, y0);
+        // 2(dx - dy)
+        var e2 = 2 * err;
+        // Dependiendo del valor de e2 se aumentan/reducen las x o y
+        if (e2 > -dy) {
+            err -= dy;
+            x0 += sx;
         }
-    }
-    else {
-        Pk = 2 * DeltaX - DeltaY;
-        Pk1 = 2 * DeltaX;
-        Pk2 = 2 * (DeltaX - DeltaY);
-        while (Y0 != Y1) {
-            Punto++;
-            Y0 = Y0 + stepY;
-            if (Pk < 0) {
-                Pk = Pk + Pk1;
-            }
-            else {
-                X0 = X0 + stepX;
-                Pk = Pk + Pk2;
-            }
-            DibujarPixel(X0, Y0);
+        if (e2 < dx) {
+            err += dx;
+            y0 += sy;
         }
     }
 }
@@ -402,19 +395,19 @@ function DibujarLineaBresenhan(Punto0, Punto1) {
     DibujarPixel(Punto1.X, Punto1.Y);
 }
 function DrawCirle(PuntoMedio, Radio) {
-    let X0 = PuntoMedio.X, Y0 = PuntoMedio.X;
+    let X0 = PuntoMedio.X, Y0 = PuntoMedio.Y;
     let X = Radio;
     let Y = 0;
     let radiusError = 1 - X;
     while (X >= Y) {
-        DibujarPixel((X + X0), (Y + Y0));
-        DibujarPixel((Y + X0), (X + Y0));
-        DibujarPixel((-X + X0), (Y + Y0));
-        DibujarPixel((-Y + X0), (X + Y0));
-        DibujarPixel((-X + X0), (-Y + Y0));
-        DibujarPixel((-Y + X0), (-X + Y0));
-        DibujarPixel((X + X0), (-Y + Y0));
-        DibujarPixel((Y + X0), (-X + Y0));
+        DibujarPixel(X + X0, Y + Y0);
+        DibujarPixel(Y + X0, X + Y0);
+        DibujarPixel(-X + X0, Y + Y0);
+        DibujarPixel(-Y + X0, X + Y0);
+        DibujarPixel(-X + X0, -Y + Y0);
+        DibujarPixel(-Y + X0, -X + Y0);
+        DibujarPixel(X + X0, -Y + Y0);
+        DibujarPixel(Y + X0, -X + Y0);
         Y++;
         if (radiusError < 0) {
             radiusError += 2 * Y + 1;
@@ -425,9 +418,39 @@ function DrawCirle(PuntoMedio, Radio) {
         }
     }
 }
-;
-var PuntoAux = new Punto(500, 500);
-DrawCirle(PuntoAux, 50);
+function drawPoligon(Punto0, Punto1, Radio, lados) {
+    let x0 = Punto0.X, y0 = Punto0.Y;
+    let y1 = Punto1.Y;
+    let PuntoAnterior = new Punto(0, 0);
+    let PuntoAux = new Punto(0, 0);
+    console.log(NLados);
+    console.log("Paso 1");
+    // var radio = x1 - x0;
+    let DeltaY = y1 - y0;
+    let x = Radio * Math.cos((Math.PI / 180) * 0) + x0;
+    let y = DeltaY * Math.sin((Math.PI / 180) * 0) + y0;
+    console.log("Paso 2");
+    PuntoAnterior = new Punto(x, y);
+    PuntoAnterior.Redondear();
+    let PrimerPunto = PuntoAnterior;
+    PrimerPunto.Redondear();
+    for (let index = 0; index <= 360; index += (360 / lados)) {
+        x = Radio * Math.cos((Math.PI / 180) * index) + x0;
+        y = DeltaY * Math.sin((Math.PI / 180) * index) + y0;
+        PuntoAux = new Punto(x, y);
+        PuntoAux.Redondear();
+        console.log(`(${PuntoAnterior.X} ${PuntoAnterior.Y})---------(${PuntoAux.X} ${PuntoAux.Y})`);
+        MetodoBresenhanA(PuntoAnterior, PuntoAux);
+        PuntoAnterior = PuntoAux;
+        alert(index);
+    }
+    MetodoBresenhanA(PuntoAux, PuntoInicial);
+}
+// var PuntoAux=new Punto(0,0);
+// var PuntoAux2=new Punto(500,500);
+// DibujarPixel(midpoint(PuntoAux,PuntoAux2).X,midpoint(PuntoAux,PuntoAux2).Y);
+// DibujarLineaBresenhan(midpoint(PuntoAux,PuntoAux2),PuntoAux2);
+//   DrawCirle(midpoint(PuntoAux,PuntoAux2),Distancia(midpoint(PuntoAux,PuntoAux2),PuntoAux2));
 function Limpiar() {
     context.clearRect(0, 0, canvas.width, canvas.height);
 }
