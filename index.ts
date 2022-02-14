@@ -88,7 +88,6 @@ function Selector(
       break;
   }
   switch (Herramienta) {
-    
     case "Circulo":
       console.log("Entro Circulo");
       let AuxCentro: Punto = midpoint(Punto0, Punto1);
@@ -96,10 +95,20 @@ function Selector(
       let AuxRadio: number = Distancia(AuxCentro, Punto1);
       DrawCirle(AuxCentro, AuxRadio);
       break;
+    case "Elipse":
+      console.log("Entro Elipse");
+      drawElipse(
+        midpoint(Punto0, Punto1),
+        Punto1,
+
+        360,
+        MetodoDibujo
+      );
+      break;
     case "Poligono":
       console.log("Entro Poligono");
       drawPoligon(
-        Punto0,
+        midpoint(Punto0, Punto1),
         Punto1,
         Distancia(Punto0, Punto1) / 2,
         NLados,
@@ -450,18 +459,19 @@ function drawPoligon(
 ) {
   let x0: number = Punto0.X,
     y0: number = Punto0.Y;
-  let y1: number = Punto1.Y;
+  let x1: number = Punto1.X,
+    y1: number = Punto1.Y;
 
   let PuntoAnterior: Punto = new Punto(0, 0);
   let PuntoAux: Punto = new Punto(0, 0);
-  console.log(NLados);
 
   // var radio = x1 - x0;
-  let DeltaY: number = y1 - y0;
+  let DeltaX: number = Radio; //x1 - x0;
+  let DeltaY: number = Radio; //y1 - y0;
 
-  let x: number = Radio * Math.cos((Math.PI / 180) * 0) + x0;
+  let x: number = DeltaX * Math.cos((Math.PI / 180) * 0) + x0;
   let y: number = DeltaY * Math.sin((Math.PI / 180) * 0) + y0;
-
+  DibujarPixel(x, y);
   PuntoAnterior = new Punto(x, y);
   PuntoAnterior.Redondear();
 
@@ -469,7 +479,47 @@ function drawPoligon(
   PrimerPunto.Redondear();
 
   for (let index: number = 0; index <= 360; index += 360 / lados) {
-    x = Radio * Math.cos((Math.PI / 180) * index) + x0;
+    x = DeltaX * Math.cos((Math.PI / 180) * index) + x0;
+    y = DeltaY * Math.sin((Math.PI / 180) * index) + y0;
+    PuntoAux = new Punto(x, y);
+    PuntoAux.Redondear();
+
+    Metodo(PuntoAnterior, PuntoAux);
+
+    PuntoAnterior = PuntoAux;
+  }
+
+  DibujarLineaBresenhan(PuntoAux, PrimerPunto);
+}
+function drawElipse(
+  Punto0: Punto,
+  Punto1: Punto,
+  lados: number,
+  Metodo: Function
+) {
+  let x0: number = Punto0.X,
+    y0: number = Punto0.Y;
+  let x1: number = Punto1.X,
+    y1: number = Punto1.Y;
+
+  let PuntoAnterior: Punto = new Punto(0, 0);
+  let PuntoAux: Punto = new Punto(0, 0);
+
+  // var radio = x1 - x0;
+  let DeltaX = x1 - x0;
+  let DeltaY: number = y1 - y0;
+
+  let x: number = DeltaX * Math.cos((Math.PI / 180) * 0) + x0;
+  let y: number = DeltaY * Math.sin((Math.PI / 180) * 0) + y0;
+  DibujarPixel(x, y);
+  PuntoAnterior = new Punto(x, y);
+  PuntoAnterior.Redondear();
+
+  let PrimerPunto: Punto = PuntoAnterior;
+  PrimerPunto.Redondear();
+
+  for (let index: number = 0; index <= 360; index += 360 / lados) {
+    x = DeltaX * Math.cos((Math.PI / 180) * index) + x0;
     y = DeltaY * Math.sin((Math.PI / 180) * index) + y0;
     PuntoAux = new Punto(x, y);
     PuntoAux.Redondear();

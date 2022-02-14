@@ -43,6 +43,7 @@ canvas.addEventListener("mouseup", function (e) {
     //console.log(`Coordenada 2: ${PuntoFinal.X}, ${PuntoFinal.Y}`);
     Selector(SeleccionMetodo, SeleccionHerramienta, PuntoInicial, PuntoFinal);
 });
+
 function HandleMetodo(X) {
     console.log(X.value);
     SeleccionMetodo = X.value;
@@ -76,12 +77,16 @@ function Selector(Metodo, Herramienta, Punto0, Punto1) {
             let AuxRadio = Distancia(AuxCentro, Punto1);
             DrawCirle(AuxCentro, AuxRadio);
             break;
+        case "Elipse":
+            console.log("Entro Elipse");
+            drawElipse(midpoint(Punto0, Punto1), Punto1, 360, MetodoDibujo);
+            break;
         case "Poligono":
             console.log("Entro Poligono");
-            drawPoligon(Punto0, Punto1, Distancia(Punto0, Punto1) / 2, NLados, MetodoDibujo);
+            drawPoligon(midpoint(Punto0, Punto1), Punto1, Distancia(Punto0, Punto1) / 2, NLados, MetodoDibujo);
             break;
         default:
-            console.log("Entro Poligono");
+            console.log("Entro Linea");
             MetodoDibujo(Punto0, Punto1);
             break;
     }
@@ -353,20 +358,46 @@ function DrawCirle(PuntoMedio, Radio) {
 }
 function drawPoligon(Punto0, Punto1, Radio, lados, Metodo) {
     let x0 = Punto0.X, y0 = Punto0.Y;
-    let y1 = Punto1.Y;
+    let x1 = Punto1.X, y1 = Punto1.Y;
     let PuntoAnterior = new Punto(0, 0);
     let PuntoAux = new Punto(0, 0);
-    console.log(NLados);
     // var radio = x1 - x0;
-    let DeltaY = y1 - y0;
-    let x = Radio * Math.cos((Math.PI / 180) * 0) + x0;
+    let DeltaX = Radio; //x1 - x0;
+    let DeltaY = Radio; //y1 - y0;
+    let x = DeltaX * Math.cos((Math.PI / 180) * 0) + x0;
     let y = DeltaY * Math.sin((Math.PI / 180) * 0) + y0;
+    DibujarPixel(x, y);
     PuntoAnterior = new Punto(x, y);
     PuntoAnterior.Redondear();
     let PrimerPunto = PuntoAnterior;
     PrimerPunto.Redondear();
     for (let index = 0; index <= 360; index += 360 / lados) {
-        x = Radio * Math.cos((Math.PI / 180) * index) + x0;
+        x = DeltaX * Math.cos((Math.PI / 180) * index) + x0;
+        y = DeltaY * Math.sin((Math.PI / 180) * index) + y0;
+        PuntoAux = new Punto(x, y);
+        PuntoAux.Redondear();
+        Metodo(PuntoAnterior, PuntoAux);
+        PuntoAnterior = PuntoAux;
+    }
+    DibujarLineaBresenhan(PuntoAux, PrimerPunto);
+}
+function drawElipse(Punto0, Punto1, lados, Metodo) {
+    let x0 = Punto0.X, y0 = Punto0.Y;
+    let x1 = Punto1.X, y1 = Punto1.Y;
+    let PuntoAnterior = new Punto(0, 0);
+    let PuntoAux = new Punto(0, 0);
+    // var radio = x1 - x0;
+    let DeltaX = x1 - x0;
+    let DeltaY = y1 - y0;
+    let x = DeltaX * Math.cos((Math.PI / 180) * 0) + x0;
+    let y = DeltaY * Math.sin((Math.PI / 180) * 0) + y0;
+    DibujarPixel(x, y);
+    PuntoAnterior = new Punto(x, y);
+    PuntoAnterior.Redondear();
+    let PrimerPunto = PuntoAnterior;
+    PrimerPunto.Redondear();
+    for (let index = 0; index <= 360; index += 360 / lados) {
+        x = DeltaX * Math.cos((Math.PI / 180) * index) + x0;
         y = DeltaY * Math.sin((Math.PI / 180) * index) + y0;
         PuntoAux = new Punto(x, y);
         PuntoAux.Redondear();
