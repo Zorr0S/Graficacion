@@ -374,7 +374,7 @@ function MetodoBresenhanA(Punto0, Punto1) {
         }
     }
 }
-//Funcion para dibujar un solo pixel
+//Funcion para dibujar
 function DibujarPixel(X, Y) {
     context.fillStyle = "#197BBD";
     context.fillRect(X, Y, 1, 1);
@@ -401,6 +401,33 @@ function DibujarLineaBresenhan(Punto0, Punto1) {
     MetodoBresenhanA(Punto0, Punto1);
     DibujarPixel(Punto1.X, Punto1.Y);
 }
+function DrawCirle(PuntoMedio, Radio) {
+    let X0 = PuntoMedio.X, Y0 = PuntoMedio.X;
+    let X = Radio;
+    let Y = 0;
+    let radiusError = 1 - X;
+    while (X >= Y) {
+        DibujarPixel((X + X0), (Y + Y0));
+        DibujarPixel((Y + X0), (X + Y0));
+        DibujarPixel((-X + X0), (Y + Y0));
+        DibujarPixel((-Y + X0), (X + Y0));
+        DibujarPixel((-X + X0), (-Y + Y0));
+        DibujarPixel((-Y + X0), (-X + Y0));
+        DibujarPixel((X + X0), (-Y + Y0));
+        DibujarPixel((Y + X0), (-X + Y0));
+        Y++;
+        if (radiusError < 0) {
+            radiusError += 2 * Y + 1;
+        }
+        else {
+            X--;
+            radiusError += 2 * (Y - X + 1);
+        }
+    }
+}
+;
+var PuntoAux = new Punto(500, 500);
+DrawCirle(PuntoAux, 50);
 function Limpiar() {
     context.clearRect(0, 0, canvas.width, canvas.height);
 }
