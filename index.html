@@ -3,33 +3,44 @@
 
 <head>
     <meta charset="UTF-8">
- 
+
 </head>
 
 <body align="center">
     <h1 align="center">Algoritmos de dibujado de linea</h1>
     <div align="center">
-        
-        <div class="tools">
-            <input type="radio" id="Directo" name="tool" value="Directo" checked="true" onclick="handleTool(this);"><label for="Directo"><span>Directo</span></label>
-            <input type="radio" id="DDA" name="tool" value="DDA" onclick="handleTool(this);"><label for="DDA">DDA</label>
-            <input type="radio" id="Bresenhan" name="tool" value="Bresenhan" onclick="handleTool(this);"><label for="Bresenhan">Bresenhan</label>
+
+        <div class="Metodos">
+            <input type="radio" id="Directo" name="Metodos" value="Directo" checked="true"
+                onclick="HandleMetodo(this);"><label for="Directo"><span>Directo</span></label>
+            <input type="radio" id="DDA" name="Metodos" value="DDA" onclick="HandleMetodo(this);"><label
+                for="DDA">DDA</label>
+            <input type="radio" id="Bresenhan" name="Metodos" value="Bresenhan" onclick="HandleMetodo(this);"><label
+                for="Bresenhan">Bresenhan</label>
             <br>
-            <input type="radio" id="Circulo" name="tool" value="Circulo" onclick="handleTool(this);"><label for="Circulo">Circulo</label>
             <br>
-            <input type="radio" id="Poligono" name="tool" value="Poligono" onclick="handleTool(this);"><label for="Poligono">Poligono</label>
-            <input type="number" id="N_Lados" name="tool" min="3" value="3" onchange="handleNumberTool(this);">
-            
+            <div class="Metodos">
+                <input type="radio" id="Linea" name="Herramienta" value="Linea" checked="true" onclick="HandleHerramienta(this);"><label
+                    for="Linea">Linea</label>
+
+                <input type="radio" id="Circulo" name="Herramienta" value="Circulo" onclick="HandleHerramienta(this);"><label
+                    for="Circulo">Circulo</label>
+
+                <input type="radio" id="Poligono" name="Herramienta" value="Poligono" onclick="HandleHerramienta(this);"><label
+                    for="Poligono">Poligono</label>
+                <input type="number" id="N_Lados" name="Herramienta" min="3" value="3"
+                    onchange="handleNumberTool(this);">
+            </div>
             <br>
             <button onclick="Limpiar()">Limpiar</button>
             <button onclick="Prueba()">Pruebas</button>
-        </div>      
+        </div>
         <br>
         <canvas id="canvas" width="1000px" height="1000px" style="border: 1px solid black;"></canvas>
     </div>
 </body>
 <!-- <script src="./Metodos.js"></script>  -->
 
- <script src="./index.js"></script> 
+<script src="./index.js"></script>
 
 </html>

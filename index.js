@@ -17,10 +17,11 @@ class Punto {
     }
 }
 //Variables Gobales
-let Seleccion = "Directo";
+let SeleccionMetodo = "Directo";
+let SeleccionHerramienta = "Linea";
+let NLados = 3;
 let inicialX, inicialY;
 let finalX, finalY;
-let NLados = 3;
 let PuntoInicial = new Punto(0, 0), PuntoFinal = new Punto(0, 0);
 function RefreshPosition() {
     context = canvas.getContext("2d");
@@ -39,43 +40,49 @@ canvas.addEventListener("mouseup", function (e) {
     finalX = e.clientX - rect.left;
     finalY = e.clientY - rect.top;
     PuntoFinal = new Punto(Math.round(finalX), Math.round(finalY));
-    console.log(`Coordenada 2: ${PuntoFinal.X}, ${PuntoFinal.Y}`);
-    Selector(Seleccion, PuntoInicial, PuntoFinal);
+    //console.log(`Coordenada 2: ${PuntoFinal.X}, ${PuntoFinal.Y}`);
+    Selector(SeleccionMetodo, SeleccionHerramienta, PuntoInicial, PuntoFinal);
 });
-function handleTool(X) {
+function HandleMetodo(X) {
     console.log(X.value);
-    Seleccion = X.value;
+    SeleccionMetodo = X.value;
+}
+function HandleHerramienta(X) {
+    console.log(X.value);
+    SeleccionHerramienta = X.value;
 }
 function handleNumberTool(X) {
     NLados = parseInt(X.value);
     console.log(NLados);
 }
 //ALgoritmos
-function Selector(Metodo, Punto0, Punto1) {
+function Selector(Metodo, Herramienta, Punto0, Punto1) {
+    let MetodoDibujo = DibujarLineaDirecta;
     switch (Metodo) {
         case "DDA":
-            console.log("Entro DDA");
-            DibujarLineaDDA(Punto0, Punto1);
+            MetodoDibujo = DibujarLineaDDA;
             break;
         case "Bresenhan":
-            console.log("Entro Bresenhan");
-            DibujarLineaBresenhan(Punto0, Punto1);
+            MetodoDibujo = DibujarLineaBresenhan;
             break;
+        default:
+            MetodoDibujo = DibujarLineaDirecta;
+            break;
+    }
+    switch (Herramienta) {
         case "Circulo":
             console.log("Entro Circulo");
             let AuxCentro = midpoint(Punto0, Punto1);
-            console.log(`Punto Medio: ${AuxCentro.X} , ${AuxCentro.Y} `);
             let AuxRadio = Distancia(AuxCentro, Punto1);
-            console.log(`Radio: ${AuxRadio}`);
             DrawCirle(AuxCentro, AuxRadio);
             break;
         case "Poligono":
             console.log("Entro Poligono");
-            drawPoligon(Punto0, Punto1, Distancia(Punto0, Punto1) / 2, NLados);
+            drawPoligon(Punto0, Punto1, Distancia(Punto0, Punto1) / 2, NLados, MetodoDibujo);
             break;
         default:
-            console.log("Entro Directo");
-            DibujarLineaDirecta(Punto0, Punto1);
+            console.log("Entro Poligono");
+            MetodoDibujo(Punto0, Punto1);
             break;
     }
 }
@@ -120,7 +127,7 @@ function Prueba() {
         EsquinaDerechaA.push([1000, 1000 - i]);
         EsquinaDerechaB.push([1000 - i, 1000]);
     }
-    function PruebaDirecta() {
+    function PruebaDesempeno(MetodoDibujo, Cadena) {
         var startDate = new Date();
         // //Dibujar verticales
         let Punto0 = new Punto(0, 0);
@@ -130,7 +137,7 @@ function Prueba() {
             Punto0.Y = VerticalesA[index][1];
             Punto1.X = VerticalesB[index][0];
             Punto1.Y = VerticalesB[index][1];
-            DibujarLineaDirecta(Punto0, Punto1);
+            MetodoDibujo(Punto0, Punto1);
         }
         // //Dibujar Horizaontales
         for (let index = 0; index < HorizontalesA.length; index++) {
@@ -138,107 +145,31 @@ function Prueba() {
             Punto0.Y = HorizontalesA[index][1];
             Punto1.X = HorizontalesB[index][0];
             Punto1.Y = HorizontalesB[index][1];
-            DibujarLineaDirecta(Punto0, Punto1);
+            MetodoDibujo(Punto0, Punto1);
         }
         for (let index = 0; index < EsquinaDerechaA.length; index++) {
             Punto0.X = EsquinaDerechaA[index][0];
             Punto0.Y = EsquinaDerechaA[index][1];
             Punto1.X = EsquinaDerechaB[index][0];
             Punto1.Y = EsquinaDerechaB[index][1];
-            DibujarLineaDirecta(Punto0, Punto1);
+            MetodoDibujo(Punto0, Punto1);
         }
         for (let index = 0; index < EsquinaIzquierdaA.length; index++) {
             Punto0.X = EsquinaIzquierdaA[index][0];
             Punto0.Y = EsquinaIzquierdaA[index][1];
             Punto1.X = EsquinaIzquierdaB[index][0];
             Punto1.Y = EsquinaIzquierdaB[index][1];
-            DibujarLineaDirecta(Punto0, Punto1);
+            MetodoDibujo(Punto0, Punto1);
         }
         var endDate = new Date();
         var seconds = (endDate.getTime() - startDate.getTime()) / 1000;
-        console.log(`Directo: ${seconds}`);
+        console.log(`${Cadena}: ${seconds}`);
     }
-    function PruebaDDA() {
-        var startDate = new Date();
-        // //Dibujar verticales
-        let Punto0 = new Punto(0, 0);
-        let Punto1 = new Punto(0, 0);
-        for (let index = 0; index < VerticalesA.length; index++) {
-            Punto0.X = VerticalesA[index][0];
-            Punto0.Y = VerticalesA[index][1];
-            Punto1.X = VerticalesB[index][0];
-            Punto1.Y = VerticalesB[index][1];
-            DibujarLineaDDA(Punto0, Punto1);
-        }
-        // //Dibujar Horizaontales
-        for (let index = 0; index < HorizontalesA.length; index++) {
-            Punto0.X = HorizontalesA[index][0];
-            Punto0.Y = HorizontalesA[index][1];
-            Punto1.X = HorizontalesB[index][0];
-            Punto1.Y = HorizontalesB[index][1];
-            DibujarLineaDDA(Punto0, Punto1);
-        }
-        for (let index = 0; index < EsquinaDerechaA.length; index++) {
-            Punto0.X = EsquinaDerechaA[index][0];
-            Punto0.Y = EsquinaDerechaA[index][1];
-            Punto1.X = EsquinaDerechaB[index][0];
-            Punto1.Y = EsquinaDerechaB[index][1];
-            DibujarLineaDDA(Punto0, Punto1);
-        }
-        for (let index = 0; index < EsquinaIzquierdaA.length; index++) {
-            Punto0.X = EsquinaIzquierdaA[index][0];
-            Punto0.Y = EsquinaIzquierdaA[index][1];
-            Punto1.X = EsquinaIzquierdaB[index][0];
-            Punto1.Y = EsquinaIzquierdaB[index][1];
-            DibujarLineaDDA(Punto0, Punto1);
-        }
-        var endDate = new Date();
-        var seconds = (endDate.getTime() - startDate.getTime()) / 1000;
-        console.log(`DDA: ${seconds}`);
-    }
-    function PruebaBresenhan() {
-        var startDate = new Date();
-        // //Dibujar verticales
-        let Punto0 = new Punto(0, 0);
-        let Punto1 = new Punto(0, 0);
-        for (let index = 0; index < VerticalesA.length; index++) {
-            Punto0.X = VerticalesA[index][0];
-            Punto0.Y = VerticalesA[index][1];
-            Punto1.X = VerticalesB[index][0];
-            Punto1.Y = VerticalesB[index][1];
-            DibujarLineaBresenhan(Punto0, Punto1);
-        }
-        // //Dibujar Horizaontales
-        for (let index = 0; index < HorizontalesA.length; index++) {
-            Punto0.X = HorizontalesA[index][0];
-            Punto0.Y = HorizontalesA[index][1];
-            Punto1.X = HorizontalesB[index][0];
-            Punto1.Y = HorizontalesB[index][1];
-            DibujarLineaBresenhan(Punto0, Punto1);
-        }
-        for (let index = 0; index < EsquinaDerechaA.length; index++) {
-            Punto0.X = EsquinaDerechaA[index][0];
-            Punto0.Y = EsquinaDerechaA[index][1];
-            Punto1.X = EsquinaDerechaB[index][0];
-            Punto1.Y = EsquinaDerechaB[index][1];
-            DibujarLineaBresenhan(Punto0, Punto1);
-        }
-        for (let index = 0; index < EsquinaIzquierdaA.length; index++) {
-            Punto0.X = EsquinaIzquierdaA[index][0];
-            Punto0.Y = EsquinaIzquierdaA[index][1];
-            Punto1.X = EsquinaIzquierdaB[index][0];
-            Punto1.Y = EsquinaIzquierdaB[index][1];
-            DibujarLineaBresenhan(Punto0, Punto1);
-        }
-        var endDate = new Date();
-        var seconds = (endDate.getTime() - startDate.getTime()) / 1000;
-        console.log(`Bresenhan: ${seconds}`);
-    }
-    PruebaDirecta();
+    PruebaDesempeno(DibujarLineaDirecta, "Metodo Directo");
     Limpiar();
-    PruebaDDA();
+    PruebaDesempeno(DibujarLineaDDA, "Metodo DDA");
     Limpiar();
-    PruebaBresenhan();
+    PruebaDesempeno(DibujarLineaBresenhan, "Bresenhan");
     //Dibujar Esquina Derecha
 }
 //----------------------------Metodos-----------------------------
@@ -339,7 +270,6 @@ function MetodoDDA(Punto0, Punto1) {
 }
 //Algoritmo Bresenham
 function MetodoBresenhanA(Punto0, Punto1) {
-    Punto;
     let x0 = Punto0.X, y0 = Punto0.Y;
     let x1 = Punto1.X, y1 = Punto1.Y;
     var dx = Math.abs(x1 - x0);
@@ -347,8 +277,8 @@ function MetodoBresenhanA(Punto0, Punto1) {
     var dy = Math.abs(y1 - y0);
     //console.log("dy = " + dy);
     // Se saca la diferencia de las x y y
-    var sx = (x0 < x1) ? 1 : -1;
-    var sy = (y0 < y1) ? 1 : -1;
+    var sx = x0 < x1 ? 1 : -1;
+    var sy = y0 < y1 ? 1 : -1;
     // dx -dy
     var err = dx - dy;
     // Mientras los puntos no sean iguales
@@ -376,6 +306,7 @@ function DibujarPixel(X, Y) {
 function DibujarLineaDDA(Punto0, Punto1) {
     // console.log(X0 + " + " + Y0);
     // console.log(X1 + " + " + Y1);
+    console.log("Entro DDA");
     DibujarPixel(Punto0.X, Punto0.Y);
     MetodoDDA(Punto0, Punto1);
     DibujarPixel(Punto1.X, Punto1.Y);
@@ -383,17 +314,20 @@ function DibujarLineaDDA(Punto0, Punto1) {
 function DibujarLineaDirecta(Punto0, Punto1) {
     // console.log(X0 + " + " + Y0);
     // console.log(X1 + " + " + Y1);
+    console.log("Entro Directo");
     DibujarPixel(Punto0.X, Punto0.Y);
     MetodoDirecto(Punto0, Punto1);
     DibujarPixel(Punto1.X, Punto1.Y);
 }
 function DibujarLineaBresenhan(Punto0, Punto1) {
-    console.log(`(${Punto0.X} ${Punto0.Y})---------(${Punto1.X} ${Punto1.Y})`);
+    //console.log(`(${Punto0.X} ${Punto0.Y})---------(${Punto1.X} ${Punto1.Y})`);
+    console.log("Entro Bresenhan");
     DibujarPixel(Punto0.X, Punto0.Y);
     MetodoBresenhanA(Punto0, Punto1);
     DibujarPixel(Punto1.X, Punto1.Y);
 }
 function DrawCirle(PuntoMedio, Radio) {
+    console.log("Entro Circulo");
     let X0 = PuntoMedio.X, Y0 = PuntoMedio.Y;
     let X = Radio;
     let Y = 0;
@@ -417,32 +351,28 @@ function DrawCirle(PuntoMedio, Radio) {
         }
     }
 }
-function drawPoligon(Punto0, Punto1, Radio, lados) {
+function drawPoligon(Punto0, Punto1, Radio, lados, Metodo) {
     let x0 = Punto0.X, y0 = Punto0.Y;
     let y1 = Punto1.Y;
     let PuntoAnterior = new Punto(0, 0);
     let PuntoAux = new Punto(0, 0);
     console.log(NLados);
-    console.log("Paso 1");
     // var radio = x1 - x0;
     let DeltaY = y1 - y0;
     let x = Radio * Math.cos((Math.PI / 180) * 0) + x0;
     let y = DeltaY * Math.sin((Math.PI / 180) * 0) + y0;
-    console.log("Paso 2");
     PuntoAnterior = new Punto(x, y);
     PuntoAnterior.Redondear();
     let PrimerPunto = PuntoAnterior;
     PrimerPunto.Redondear();
-    console.log(`(${PuntoAnterior.X} ${PuntoAnterior.Y})`);
-    for (let index = 0; index <= 360; index += (360 / lados)) {
+    for (let index = 0; index <= 360; index += 360 / lados) {
         x = Radio * Math.cos((Math.PI / 180) * index) + x0;
         y = DeltaY * Math.sin((Math.PI / 180) * index) + y0;
         PuntoAux = new Punto(x, y);
         PuntoAux.Redondear();
-        DibujarLineaBresenhan(PuntoAnterior, PuntoAux);
+        Metodo(PuntoAnterior, PuntoAux);
         PuntoAnterior = PuntoAux;
     }
-    console.log(`Ultima`);
     DibujarLineaBresenhan(PuntoAux, PrimerPunto);
 }
 // var PuntoAux=new Punto(0,0);
