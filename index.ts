@@ -531,14 +531,13 @@ function drawPoligon(
   let PuntoAnterior: Punto = new Punto(0, 0);
   let PuntoAux: Punto = new Punto(0, 0);
   console.log(NLados);
-  console.log("Paso 1");
-
+ 
   // var radio = x1 - x0;
   let DeltaY: number = y1 - y0;
 
   let x:number = Radio * Math.cos((Math.PI / 180) * 0) + x0;
   let y:number = DeltaY * Math.sin((Math.PI / 180) * 0) + y0;
-  console.log("Paso 2");
+ 
   
   PuntoAnterior = new Punto(x, y);
   PuntoAnterior.Redondear();
