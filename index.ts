@@ -506,7 +506,7 @@ function drawElipse(
   let PuntoAux: Punto = new Punto(0, 0);
 
   // var radio = x1 - x0;
-  let DeltaX = x1 - x0;
+  let DeltaX:number = x1 - x0;
   let DeltaY: number = y1 - y0;
 
   let x: number = DeltaX * Math.cos((Math.PI / 180) * 0) + x0;
