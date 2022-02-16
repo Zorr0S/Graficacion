@@ -531,12 +531,11 @@ function drawElipse(
 
   DibujarLineaBresenhan(PuntoAux, PrimerPunto);
 }
-// var PuntoAux=new Punto(0,0);
-// var PuntoAux2=new Punto(500,500);
-// DibujarPixel(midpoint(PuntoAux,PuntoAux2).X,midpoint(PuntoAux,PuntoAux2).Y);
-
-// DibujarLineaBresenhan(midpoint(PuntoAux,PuntoAux2),PuntoAux2);
-//   DrawCirle(midpoint(PuntoAux,PuntoAux2),Distancia(midpoint(PuntoAux,PuntoAux2),PuntoAux2));
+function drawRectangle(Punto0:Punto,Punto1:Punto,Metodo:Function  ) {
+  let Punto2:Punto
+  let Punto3
+  
+}
 function Limpiar() {
   context.clearRect(0, 0, canvas.width, canvas.height);
 }
